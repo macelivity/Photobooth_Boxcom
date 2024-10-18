@@ -27,7 +27,8 @@ app.post("/printer/order", async (req, res) => {
 
     let image_id = req.body;
 
-    fs.readFile(IMAGE_DIRECTORY + "/" + image_id, function (err, data) {
+    console.log("Reading file: " + IMAGE_DIRECTORY + "/img" + image_id + ".jpg")
+    fs.readFile(IMAGE_DIRECTORY + "/img" + image_id + ".jpg", function (err, data) {
         if (err) {
             res.status(500).send("FAILED");
             throw err;
