@@ -2,13 +2,13 @@ import camera.camera_controller as ctrl
 import subprocess
 from threading import Thread
 
-def start_printer_controller(args):
+def start_printer_controller():
     subprocess.run("node printer/printer_controller.js")
 
-def start_camera_controller(args):
+def start_camera_controller():
     ctrl.startup()
 
-def start_admin_web(args):
+def start_admin_web():
     return
 
 
