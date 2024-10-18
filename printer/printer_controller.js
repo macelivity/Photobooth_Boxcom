@@ -1,8 +1,7 @@
 const express = require("express")
 const ipp = require("ipp");
-const Printer = ipp.Printer("ipp://CP1500ecdf2f.local:631/ipp/print");
+const printer = ipp.Printer("ipp://CP1500ecdf2f.local:631/ipp/print");
 const fs = require("fs");
-const saver = require("file-saver");
 
 const PORT = 5050;
 const IMAGE_DIRECTORY = "";
@@ -48,7 +47,7 @@ app.post("/printer/order", async (req, res) => {
     });
 
     printCount++;
-    
+
     res.status(200).send("OK");
 });
 
