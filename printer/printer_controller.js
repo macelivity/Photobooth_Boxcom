@@ -45,8 +45,8 @@ app.post("/printer/order", async (req, res) => {
     };
 
     printer.execute("Print-Job", msg, function (err, res) {
-        console.log(err);
-        console.log(res);
+        console.log("[PRINTER] error: " + err);
+        console.log("[PRINTER] result: " + res);
     });
 
     printCount++;
