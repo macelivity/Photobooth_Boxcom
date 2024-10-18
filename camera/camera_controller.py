@@ -7,8 +7,8 @@ import gphoto2 as gp
 import logging
 
 
-IMAGE_TARGET_DIRECTORY = "/home/photobooth/photobooth/images"
-RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/photobooth/images_raw"
+IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images"
+RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
 FILENAME_DIGIT_COUNT = 6
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
 CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9,  }
