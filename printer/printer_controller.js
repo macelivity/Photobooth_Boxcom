@@ -39,14 +39,17 @@ app.post("/printer/order", async (req, res) => {
     var msg = {
         "operation-attributes-tag": {
             "requesting-user-name": "Fotobox",
-            "document-format": "image/jpg"
+            "document-format": "image/jpeg"
         },
         data: document
     };
 
     printer.execute("Print-Job", msg, function (err, res) {
-        console.log("[PRINTER] error: " + err);
-        console.log("[PRINTER] result: " + res);
+        console.log("[PRINTER]");
+        console.log("\tERROR");
+        console.log(err);
+        console.log("\tRESULT");
+        console.log(res);
     });
 
     printCount++;
