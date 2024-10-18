@@ -14,21 +14,6 @@ app.use(express.json());
 var paperStock = 18;
 var printCount = 0;
 
-var auth = "unauthorized";
-
-function authorize() {
-    fetch(WEBISTE_URL + "/api/login/printer", {
-        method: "POST",
-        body: "Paul+Leonie=<3"
-    })
-        .then(async res => {
-            auth = await res.text();
-            console.log(auth);
-        });
-}
-
-authorize();
-
 
 app.get("/printer/is_ready", (req, res) => {
     console.log("[" + new Date().toLocaleString() + "] <" + req.hostname + ">: GET /printer/is_ready");
@@ -40,15 +25,7 @@ app.post("/printer/order", async (req, res) => {
 
     res.status(200).send("OK");
     console.log(req.body);
-    console.log(WEBISTE_URL + "/api/images/" + req.body.url);
-    let fetchImageResponse = await fetch(WEBISTE_URL + "/api/images/" + req.body.url, {
-        headers: {
-            'Cookie': "auth=" + auth
-        }
-    });
-    const image = await fetchImageResponse.blob();
-    saver.saveAs(image, "MyBlob.jpg");
-    console.log("Saved file");
+    console.log(WEBISTE_URL + "/api/images/" + req.body.image_id);
     return;
 
     var document;
