@@ -5,7 +5,6 @@ import threading
 import evdev
 import gphoto2 as gp
 import logging
-import isync
 
 
 IMAGE_TARGET_DIRECTORY = "/home/photobooth/photobooth/images"
