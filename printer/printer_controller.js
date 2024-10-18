@@ -39,6 +39,7 @@ app.post("/printer/order", async (req, res) => {
     var msg = {
         "operation-attributes-tag": {
             "requesting-user-name": "Fotobox",
+            "job-name": "Image.jpeg",
             "document-format": "image/jpeg"
         },
         data: document
