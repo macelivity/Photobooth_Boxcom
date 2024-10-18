@@ -279,6 +279,10 @@ def shutdown():
 	camera.exit()
 
 
+if __name__ == "__main__":
+	startup()
+
+
 #print(str(event.value) + "; c: " + str(event.code))
 #print("Received an event: " + str(event.code) + " = " + str(event.value) + "\n")
 #if event.value == 458827 or event.code == 104:
