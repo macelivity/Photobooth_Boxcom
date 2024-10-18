@@ -4,7 +4,7 @@ const printer = ipp.Printer("ipp://CP1500ecdf2f.local:631/ipp/print");
 const fs = require("fs");
 
 const PORT = 5050;
-const IMAGE_DIRECTORY = "";
+const IMAGE_DIRECTORY = "/home/photobooth/boxcom/images";
 
 const app = express();
 app.use(express.json());
@@ -30,7 +30,6 @@ app.post("/printer/order", async (req, res) => {
     console.log("Reading file: " + IMAGE_DIRECTORY + "/img" + image_id + ".jpg")
     fs.readFile(IMAGE_DIRECTORY + "/img" + image_id + ".jpg", function (err, data) {
         if (err) {
-            res.status(500).send("FAILED");
             throw err;
         }
 
