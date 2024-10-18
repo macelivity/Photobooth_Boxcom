@@ -23,10 +23,7 @@ app.get("/printer/is_ready", (req, res) => {
 app.post("/printer/order", async (req, res) => {
     console.log("[" + new Date().toLocaleString() + "] <" + req.hostname + ">: POST /printer/order");
 
-    res.status(200).send("OK");
-    console.log(req.body);
-    console.log(WEBISTE_URL + "/api/images/" + req.body.image_id);
-    return;
+    console.log("Printing image " + req.body.image_id);
 
     var document;
 
@@ -52,6 +49,8 @@ app.post("/printer/order", async (req, res) => {
     });
 
     printCount++;
+    
+    res.status(200).send("OK");
 });
 
 
@@ -79,5 +78,5 @@ app.get("/printer/print_count", (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
+    console.log(`Printer interface listening on port ${PORT}`)
 })
