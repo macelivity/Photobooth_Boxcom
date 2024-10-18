@@ -1,11 +1,10 @@
 const express = require("express")
 const ipp = require("ipp");
-const Printer = ipp.Printer("http://printer.example.com:631/ipp/print");
+const Printer = ipp.Printer("ipp://CP1500ecdf2f.local:631/ipp/print");
 const fs = require("fs");
 const saver = require("file-saver");
 
 const PORT = 5050;
-const WEBISTE_URL = "http://localhost:8447";
 const IMAGE_DIRECTORY = "";
 
 const app = express();
