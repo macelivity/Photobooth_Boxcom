@@ -28,7 +28,10 @@ app.post("/printer/order", async (req, res) => {
     let image_id = req.body;
 
     fs.readFile(IMAGE_DIRECTORY + "/" + image_id, function (err, data) {
-        if (err) throw err;
+        if (err) {
+            res.status(500).send("FAILED");
+            throw err;
+        }
 
         document = data;
     });
