@@ -2,10 +2,8 @@ import camera.camera_controller as ctrl
 import subprocess
 from threading import Thread
 
-ROOT_PATH = "/home/photobooth/boxcom"
-
 def start_printer_controller():
-    subprocess.run("node " + ROOT_PATH + "/printer/printer_controller.js")
+    subprocess.run("node printer/printer_controller.js")
 
 def start_camera_controller():
     ctrl.startup()
