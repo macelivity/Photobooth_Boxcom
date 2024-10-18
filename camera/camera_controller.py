@@ -275,6 +275,7 @@ def startup():
 
 def shutdown():
 	stop_listen_for_remote_control()
+	global camera
 	camera.exit()
 
 
