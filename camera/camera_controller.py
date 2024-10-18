@@ -264,18 +264,19 @@ def stop_listen_for_remote_control():
 	remote_control_listener.listen = False
 
 
+def startup():
+	try:
+		register_remote_control()
+		initialize_camera()
+		start_listen_for_remote_control()
+	except:
+		logging.error("Automatic startup failed")
+		print("Automatic startup failed. Please repeat manually")
+
 
 def shutdown():
 	stop_listen_for_remote_control()
 	camera.exit()
-
-try:
-	register_remote_control()
-	initialize_camera()
-	start_listen_for_remote_control()
-except:
-	logging.error("Automatic startup failed")
-	print("Automatic startup failed. Please repeat manually")
 
 
 #print(str(event.value) + "; c: " + str(event.code))

@@ -1,1 +1,6 @@
 isync.py
+__pycache__/
+
+printer/node_modules/
+
+camera/__pycache__/
