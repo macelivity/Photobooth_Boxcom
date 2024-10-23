@@ -1,9 +1,10 @@
-import camera.camera_controller as ctrl
+import camera.camera_controller as camera
+import printer.printer_controller as printer
 import subprocess
 from threading import Thread
 
 def start_printer_controller():
-    subprocess.run("node printer/printer_controller.js")
+    printer.start_server()
 
 def start_camera_controller():
     ctrl.startup()

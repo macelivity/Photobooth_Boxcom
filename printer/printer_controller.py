@@ -8,8 +8,11 @@ app = Flask(__name__)
 # Globale Variablen
 PORT = 5050
 IMAGE_DIRECTORY = "/home/photobooth/boxcom/images"
+ORDER_TIMEOUT = 55
+
 paperStock = 18
 printCount = 0
+lastPrintOrder = 0
 
 # Logger konfigurieren
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +25,17 @@ def is_ready():
 @app.route('/printer/order', methods=['POST'])
 def print_order():
     global printCount
+    global paperStock
+    global lastPrintOrder
+
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/order")
+
+    if paperStock == 0:
+        logging.warn(f"Printing image {image_id} failed due to missing paper")
+        return "Paper stock depleted", 503
+    if (datetime.datetime.now() - lastPrintOrder).seconds < ORDER_TIMEOUT:
+        logging.warn(f"Printing image {image_id} was canceled, because printer is still in timeout")
+        return "Printer busy", 503
 
     # Image ID aus Anfrage auslesen
     image_id = request.json.get("image_id")
@@ -30,7 +43,12 @@ def print_order():
 
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
+    subprocess.run("lp " + image_path)
+
     printCount += 1
+    paperStock -= 1
+    lastPrintOrder = datetime.datetime.now()
+
     return "OK", 200
 
 @app.route('/printer/stock', methods=['GET'])
