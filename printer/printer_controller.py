@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import os
 import datetime
-from pyipp import Printer
 import logging
 
 app = Flask(__name__)
@@ -11,7 +10,6 @@ PORT = 5050
 IMAGE_DIRECTORY = "/home/photobooth/boxcom/images"
 paperStock = 18
 printCount = 0
-printer = Printer("ipp://CP1500ecdf2f.local:631/ipp/print")
 
 # Logger konfigurieren
 logging.basicConfig(level=logging.INFO)
@@ -31,31 +29,6 @@ def print_order():
     logging.info(f"Printing image {image_id}")
 
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
-
-    # Bilddatei lesen
-    try:
-        with open(image_path, 'rb') as image_file:
-            document = image_file.read()
-        logging.info(f"Reading file: {image_path}")
-    except FileNotFoundError:
-        return "Image not found", 404
-
-    # IPP Druckauftrag erstellen
-    msg = {
-        "operation-attributes-tag": {
-            "requesting-user-name": "Fotobox",
-            "job-name": "Image.jpeg",
-            "document-format": "image/jpeg"
-        },
-        "data": document
-    }
-
-    try:
-        response = printer.print_job(document, document_format="image/jpeg")
-        logging.info("[PRINTER] Job sent successfully")
-    except Exception as e:
-        logging.error(f"[PRINTER] ERROR: {e}")
-        return "Printing failed", 500
 
     printCount += 1
     return "OK", 200
