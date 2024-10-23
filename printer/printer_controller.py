@@ -12,7 +12,7 @@ ORDER_TIMEOUT = 55
 
 paperStock = 18
 printCount = 0
-lastPrintOrder = 0
+lastPrintOrder = datetime.datetime.fromtimestamp(0)
 
 # Logger konfigurieren
 logging.basicConfig(level=logging.INFO)
