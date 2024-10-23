@@ -41,7 +41,7 @@ def print_order():
         return "Paper stock depleted", 503
     if (datetime.datetime.now() - lastPrintOrder).seconds < ORDER_TIMEOUT:
         logging.warn(f"Printing image {image_id} was canceled, because printer is still in timeout")
-        return "Printer busy", 503
+        return "Printer busy", 429
 
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
