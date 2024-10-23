@@ -10,8 +10,11 @@ PORT = 5050
 IMAGE_DIRECTORY = "/home/photobooth/boxcom/images"
 ORDER_TIMEOUT = 55
 
+global paperStock
 paperStock = 18
+global printCount
 printCount = 0
+global lastPrintOrder
 lastPrintOrder = datetime.datetime.fromtimestamp(0)
 
 # Logger konfigurieren
@@ -43,7 +46,7 @@ def print_order():
 
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
-    subprocess.run("lp " + image_path)
+    #subprocess.run("lp " + image_path)
 
     printCount += 1
     paperStock -= 1
