@@ -31,6 +31,9 @@ def print_order():
     global paperStock
     global lastPrintOrder
 
+    # Image ID aus Anfrage auslesen
+    image_id = request.json.get("image_id")
+
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/order")
 
     if paperStock == 0:
@@ -40,12 +43,9 @@ def print_order():
         logging.warn(f"Printing image {image_id} was canceled, because printer is still in timeout")
         return "Printer busy", 503
 
-    # Image ID aus Anfrage auslesen
-    image_id = request.json.get("image_id")
-    logging.info(f"Printing image {image_id}")
-
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
+    logging.info(f"Printing image {image_id}")
     #subprocess.run("lp " + image_path)
 
     printCount += 1
