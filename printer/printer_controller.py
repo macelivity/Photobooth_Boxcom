@@ -51,7 +51,10 @@ def print_order():
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
     logging.info(f"Printing image {image_id}")
-    subprocess.run("lp " + image_path)
+    try:
+        subprocess.run("lp " + image_path, shell=True, check=True)
+    except Exception as e:
+        logging.error(str(e))
 
     printCount += 1
     paperStock -= 1
