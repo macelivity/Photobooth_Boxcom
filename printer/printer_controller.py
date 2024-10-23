@@ -25,6 +25,10 @@ def is_ready():
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: GET /printer/is_ready")
     return "Printer is ready", 200
 
+@app.route('/printer/order', methods=['GET'])
+def get_last_order():
+    return jsonify("{ timestmap: " + str(lastPrintOrder) + " }"), 200
+
 @app.route('/printer/order', methods=['POST'])
 def print_order():
     global printCount
@@ -46,7 +50,7 @@ def print_order():
     image_path = os.path.join(IMAGE_DIRECTORY, f"img{image_id}.jpg")
 
     logging.info(f"Printing image {image_id}")
-    #subprocess.run("lp " + image_path)
+    subprocess.run("lp " + image_path)
 
     printCount += 1
     paperStock -= 1
