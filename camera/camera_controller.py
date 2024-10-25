@@ -251,7 +251,7 @@ def listen_for_remote_control():
 			print("Exception caught while consuming remote control event")
 			print(e)
 			shutdown()
-			time.sleep(4)
+			time.sleep(2)
 			initialize_camera()
 	
 	
