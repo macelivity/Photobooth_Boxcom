@@ -11,7 +11,7 @@ IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images"
 RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
 FILENAME_DIGIT_COUNT = 6
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
-CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9,  }
+CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9 }
 CAMERA_DEFAULT_CONFIG = { "aspectratio": 0, "picturestyle": 1, "aperture": 0, "shutterspeed": 35 }
 MODES = [ CAMERA_DEFAULT_CONFIG, { "aspectratio": 0 }, { "aspectratio": 3 } ]
 SECONDS_TO_GO_IDLE = 90.0
@@ -249,10 +249,11 @@ def listen_for_remote_control():
 	global remote_control
 	last_photo_time = time.time()
 	for event in remote_control.read_loop():
-		if not is_valid_trigger(event, last_photo_time): continue
-			consume_remote_control_event(event)
-			last_photo_time = time.time()
-			print("Photo taken.")
+		if not is_valid_trigger(event, last_photo_time):
+			continue
+		consume_remote_control_event(event)
+		last_photo_time = time.time()
+		print("Photo taken.")
 	
 	
 def obsolete_listen_for_remote_control():
