@@ -244,9 +244,7 @@ def listen_for_remote_control():
 		except Exception as e:
 			print("Exception caught while consuming remote control event")
 			print(e)
-			shutdown()
-			time.sleep(5)
-			startup()
+			camera
 	
 	
 def obsolete_listen_for_remote_control():
@@ -297,7 +295,7 @@ def startup():
 
 
 def shutdown():
-	stop_listen_for_remote_control()
+	#stop_listen_for_remote_control()
 	global camera
 	camera.exit()
 
