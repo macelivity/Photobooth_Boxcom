@@ -93,12 +93,17 @@ def save_image(folder, name):
 
 
 def take_picture():
-	global camera
-	file_path = camera.capture(gp.GP_CAPTURE_IMAGE)
+	try:
+		global camera
+		file_path = camera.capture(gp.GP_CAPTURE_IMAGE)
+	except Exception as e:
+		print("Capturing image failed. Exception:")
+		print(e)
+		return
 
 	# Wait for camera to finish capture
 	while True:
-		event_type, event_data = camera.wait_for_event(8000)
+		event_type, event_data = camera.wait_for_event(5000)
 		if event_type == gp.GP_EVENT_FILE_ADDED:
 			break
 
@@ -227,7 +232,7 @@ def consume_remote_control_event(event):
 
 def is_valid_trigger(event, last_photo_time):
 	if event.type != evdev.ecodes.EV_KEY: return False
-	if event.sec < last_photo_time: return False
+	if event.sec < last_photo_time + 5: return False
 	if event.value != 1: return False
 	return True
 
@@ -239,6 +244,7 @@ def listen_for_remote_control():
 		if not is_valid_trigger(event, last_photo_time): continue
 		try:
 			consume_remote_control_event(event)
+			time.sleep(5)
 			last_photo_time = time.time()
 			print("Photo taken.")
 		except Exception as e:
