@@ -11,6 +11,8 @@ PORT = 5050
 IMAGE_DIRECTORY = "/home/photobooth/boxcom/images"
 ORDER_TIMEOUT = 55
 
+global is_paused
+is_paused = False
 global paperStock
 paperStock = 18
 global inkStock
@@ -34,6 +36,7 @@ def get_last_order():
 
 @app.route('/printer/order', methods=['POST'])
 def print_order():
+    global is_paused
     global printCount
     global paperStock
     global inkStock
@@ -44,6 +47,9 @@ def print_order():
 
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/order")
 
+    if is_paused:
+        logging.info(f"Printing image {image_id} was cancelled, because the printer is paused")
+        return "Printer is paused", 409
     if paperStock == 0:
         logging.warn(f"Printing image {image_id} failed due to missing paper")
         return "Paper stock depleted", 503
@@ -111,6 +117,23 @@ def update_ink_stock():
 def get_print_count():
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: GET /printer/print_count")
     return jsonify({"count": printCount}), 200
+
+
+@app.route('/printer/is_paused', methods['GET', 'POST'])
+def pause_printer():
+    global is_paused
+    logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/pause")
+
+    if request.method == 'GET':
+        return jsonify({isPaused: is_paused}), 200
+    else:
+        pause = request.json.get('pause')
+        if pause is None:
+            return "Pause cannot be undefined", 400
+
+        is_paused = pause
+        logging.info(f"Printer is paused: {is_paused}")
+        return "OK", 200
 
 
 def start_server():
