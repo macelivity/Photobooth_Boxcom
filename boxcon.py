@@ -1,6 +1,5 @@
 import camera.camera_controller as camera
 import printer.printer_controller as printer
-import subprocess
 from threading import Thread
 
 def start_printer_controller():
