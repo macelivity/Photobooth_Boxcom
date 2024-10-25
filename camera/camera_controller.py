@@ -74,7 +74,7 @@ def register_remote_control():
 
 
 def normalize_id(id):
-    return "0" * (FILENAME_DIGIT_COUNT - len(id)) + id
+	 return "0" * (FILENAME_DIGIT_COUNT - len(id)) + id
 
 def save_image(folder, name):
 	try:
@@ -226,24 +226,26 @@ def consume_remote_control_event(event):
 	take_picture()
 
 def is_valid_trigger(event, last_photo_time):
-    if event.type != evdev.ecodes.EV_KEY: return False
-    if event.sec < last_photo_time: return False
-    if event.value != 1: return False
-    return True
+	global last_photo_time
+	if event.type != evdev.ecodes.EV_KEY: return False
+	if event.sec < last_photo_time: return False
+	if event.value != 1: return False
+	return True
 
 
 def listen_for_remote_control():
 	global remote_control
-    last_photo_time = time.time()
-    for event in remote_control.read_loop():
-        if not is_valid_trigger(event, last_photo_time): continue
-        try:
+	global last_photo_time
+	last_photo_time = time.time()
+	for event in remote_control.read_loop():
+		if not is_valid_trigger(event, last_photo_time): continue
+		try:
 			consume_remote_control_event(event)
-            last_photo_time = time.time()
-            print("Photo taken.")
-        except Exception as e:
-            print("Exception caught while consuming remote control event")
-            print(e)
+			last_photo_time = time.time()
+			print("Photo taken.")
+		except Exception as e:
+			print("Exception caught while consuming remote control event")
+			print(e)
 	
 	
 def obsolete_listen_for_remote_control():
