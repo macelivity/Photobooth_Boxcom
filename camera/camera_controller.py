@@ -226,7 +226,6 @@ def consume_remote_control_event(event):
 	take_picture()
 
 def is_valid_trigger(event, last_photo_time):
-	global last_photo_time
 	if event.type != evdev.ecodes.EV_KEY: return False
 	if event.sec < last_photo_time: return False
 	if event.value != 1: return False
@@ -235,7 +234,6 @@ def is_valid_trigger(event, last_photo_time):
 
 def listen_for_remote_control():
 	global remote_control
-	global last_photo_time
 	last_photo_time = time.time()
 	for event in remote_control.read_loop():
 		if not is_valid_trigger(event, last_photo_time): continue
