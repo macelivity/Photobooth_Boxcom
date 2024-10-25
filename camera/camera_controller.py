@@ -230,17 +230,17 @@ def change_to_previous_mode():
 def consume_remote_control_event(event):
 	try:
 		take_picture()
-		time.sleep(5)
+		time.sleep(4)
 	except Exception as e:
 		print("Exception caught while consuming remote control event")
 		print(e)
 		shutdown()
-		time.sleep(2)
+		time.sleep(1)
 		initialize_camera()
 
 def is_valid_trigger(event, last_photo_time):
 	if event.type != evdev.ecodes.EV_KEY: return False
-	if event.sec < last_photo_time + 5: return False
+	if event.sec < last_photo_time + 4: return False
 	if event.value != 1: return False
 	return True
 
