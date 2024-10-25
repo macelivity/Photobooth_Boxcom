@@ -119,7 +119,7 @@ def get_print_count():
     return jsonify({"count": printCount}), 200
 
 
-@app.route('/printer/is_paused', methods['GET', 'POST'])
+@app.route('/printer/is_paused', methods=['GET', 'POST'])
 def pause_printer():
     global is_paused
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/pause")
