@@ -12,7 +12,7 @@ RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
 FILENAME_DIGIT_COUNT = 6
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
 CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9,  }
-CAMERA_DEFAULT_CONFIG = { "aspectratio": 0, "picturestyle": 1, "aperture": 0, "shutterspeed": 32 }
+CAMERA_DEFAULT_CONFIG = { "aspectratio": 0, "picturestyle": 1, "aperture": 0, "shutterspeed": 35 }
 MODES = [ CAMERA_DEFAULT_CONFIG, { "aspectratio": 0 }, { "aspectratio": 3 } ]
 SECONDS_TO_GO_IDLE = 90.0
 
@@ -228,7 +228,15 @@ def change_to_previous_mode():
 
 
 def consume_remote_control_event(event):
-	take_picture()
+	try:
+		take_picture()
+		time.sleep(5)
+	except Exception as e:
+		print("Exception caught while consuming remote control event")
+		print(e)
+		shutdown()
+		time.sleep(2)
+		initialize_camera()
 
 def is_valid_trigger(event, last_photo_time):
 	if event.type != evdev.ecodes.EV_KEY: return False
@@ -242,17 +250,9 @@ def listen_for_remote_control():
 	last_photo_time = time.time()
 	for event in remote_control.read_loop():
 		if not is_valid_trigger(event, last_photo_time): continue
-		try:
 			consume_remote_control_event(event)
-			time.sleep(5)
 			last_photo_time = time.time()
 			print("Photo taken.")
-		except Exception as e:
-			print("Exception caught while consuming remote control event")
-			print(e)
-			shutdown()
-			time.sleep(2)
-			initialize_camera()
 	
 	
 def obsolete_listen_for_remote_control():
