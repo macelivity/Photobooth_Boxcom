@@ -244,6 +244,9 @@ def listen_for_remote_control():
 		except Exception as e:
 			print("Exception caught while consuming remote control event")
 			print(e)
+			shutdown()
+			time.sleep(5)
+			startup()
 	
 	
 def obsolete_listen_for_remote_control():
