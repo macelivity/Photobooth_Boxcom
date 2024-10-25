@@ -12,7 +12,7 @@ RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
 FILENAME_DIGIT_COUNT = 6
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
 CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9,  }
-CAMERA_DEFAULT_CONFIG = { "aspectratio": 1, "picturestyle": 1, "aperture": 0, "shutterspeed": 32 }
+CAMERA_DEFAULT_CONFIG = { "aspectratio": 0, "picturestyle": 1, "aperture": 0, "shutterspeed": 32 }
 MODES = [ CAMERA_DEFAULT_CONFIG, { "aspectratio": 0 }, { "aspectratio": 3 } ]
 SECONDS_TO_GO_IDLE = 90.0
 
