@@ -125,9 +125,9 @@ def pause_printer():
     logging.info(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] <{request.remote_addr}>: POST /printer/pause")
 
     if request.method == 'GET':
-        return jsonify({"isPaused": is_paused}), 200
+        return jsonify({"is_paused": is_paused}), 200
     else:
-        pause = request.json.get('pause')
+        pause = request.json.get('is_paused')
         if pause is None:
             return "Pause cannot be undefined", 400
 
