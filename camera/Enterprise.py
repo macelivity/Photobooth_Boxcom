@@ -23,8 +23,8 @@ print("############################################################")
 def shoot():
     camera.capture(gp.GP_CAPTURE_IMAGE)
 
-rem = RemoteInput()
-rem.connect(logging)
+rem = RemoteInput(logging)
+rem.connect()
 rem.set_action("*", shoot)
 
 event_printer = threading.Thread(target=print_events())
