@@ -23,7 +23,7 @@ def print_events():
             global camera
             try:
                 camera.capture(gp.GP_CAPTURE_IMAGE)
-                time
+                camera.capture(gp.GP_CAPTURE_IMAGE)
             except Exception as e:
                 print(e)
             finally:
