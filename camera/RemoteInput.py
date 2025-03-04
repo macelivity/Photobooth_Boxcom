@@ -41,7 +41,7 @@ class RemoteInput:
 
 
     def has_action(self, key):
-        return self.actions.has_key(key)
+        return key in self.actions
 
     def get_action(self, key):
         return self.actions[key]
