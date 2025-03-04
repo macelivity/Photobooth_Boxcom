@@ -15,7 +15,7 @@ class RemoteInput:
     def __init(self):
         self.controller = None
         self.actions = {}
-        self.last_event_time = None
+        self.last_event_time = time.time()
 
     
     def connect(self):
@@ -34,6 +34,7 @@ class RemoteInput:
             if self.is_valid_event(event):
                 get_action(event.code)()
                 get_action("*")()
+                self.last_event_time = time.time()
 
 
     def get_action(self, key):
