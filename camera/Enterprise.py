@@ -6,6 +6,9 @@ import gphoto2 as gp
 
 logging.basicConfig(filename="enterprise.log", level=logging.DEBUG)
 
+global schedule_capture
+schedule_capture = False
+
 
 global camera
 camera = gp.check_result(gp.gp_camera_new())
@@ -13,7 +16,12 @@ gp.check_result(gp.gp_camera_init(camera))
 
 def print_events():
     global camera
+    global schedule_capture
     while True:
+        if schedule_capture:
+            print("Shoot!")
+            global camera
+            camera.capture(gp.GP_CAPTURE_IMAGE)
         event_type, event_data = camera.wait_for_event(5000)
         print("Event captured: " + str(event_type) + "; <> " + str(event_data))
 
@@ -25,9 +33,8 @@ event_printer.start()
 print("########################################################################################################################")
 
 def shoot():
-    print("Shoot!")
-    global camera
-    camera.capture(gp.GP_CAPTURE_IMAGE)
+    global schedule_capture
+    schedule_capture = True
 
 rem = RemoteInput(logging)
 rem.connect()
