@@ -33,7 +33,7 @@ class RemoteInput:
         try:
             action()
         except Exception as e:
-            logging.error(e.)
+            self.logging.error(e)
 
 
     def start_listen(self):
