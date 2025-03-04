@@ -32,8 +32,8 @@ class RemoteInput:
         last_photo_time = time.time()
         for event in self.controller.read_loop():
             if self.is_valid_event(event):
-                get_action(event.code)()
-                get_action("*")()
+                self.get_action(event.code)()
+                self.get_action("*")()
                 self.last_event_time = time.time()
 
 
