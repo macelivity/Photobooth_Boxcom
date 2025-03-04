@@ -23,8 +23,11 @@ def print_events():
             global camera
             try:
                 camera.capture(gp.GP_CAPTURE_IMAGE)
-                camera.capture(gp.GP_CAPTURE_IMAGE)
             except Exception as e:
+                try:
+                    camera.capture(gp.GP_CAPTURE_IMAGE)
+                except:
+                    print("Retry failed")
                 print(e)
             finally:
                 schedule_capture = False
