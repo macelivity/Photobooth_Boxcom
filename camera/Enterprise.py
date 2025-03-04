@@ -17,6 +17,8 @@ def print_events():
         print("Event captured: " + str(event_type) + "; <> " + str(event_data))
 
 
+event_printer = threading.Thread(target=print_events())
+event_printer.start()
 
 
 print("############################################################")
@@ -28,6 +30,3 @@ def shoot():
 rem = RemoteInput(logging)
 rem.connect()
 rem.set_action("*", shoot)
-
-event_printer = threading.Thread(target=print_events())
-event_printer.start()
