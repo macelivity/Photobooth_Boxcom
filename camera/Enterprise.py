@@ -7,6 +7,7 @@ import gphoto2 as gp
 logging.basicConfig(filename="enterprise.log", level=logging.DEBUG)
 
 
+global camera
 camera = gp.check_result(gp.gp_camera_new())
 gp.check_result(gp.gp_camera_init(camera))
 
@@ -21,6 +22,7 @@ def print_events():
 print("############################################################")
 
 def shoot():
+    global camera
     camera.capture(gp.GP_CAPTURE_IMAGE)
 
 rem = RemoteInput(logging)
