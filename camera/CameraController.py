@@ -16,15 +16,15 @@ class CameraController:
         self.mode = 0
         self.config = CAMERA_DEFAULT_CONFIG
 
+
     def connect():
         self.camera = gp.check_result(gp.gp_camera_new())
         gp.check_result(gp.gp_camera_init(self.camera))
         self.camera_config = gp.check_result(gp.gp_camera_get_config(camera))
-        
 
-    def reset():
-        self.set_config({ **CAMERA_DEFAULT_CONFIG, **CAMERA_STARTUP_CONFIG })
-        self.mode = 0
+
+    def disconnect():
+        self.camera.exit()
 
 
     """
@@ -69,6 +69,15 @@ class CameraController:
         self.config = { **CAMERA_DEFAULT_CONFIG, **configurations }
 
         gp.check_result(gp.gp_camera_set_config(self.camera, self.camera_config))
+        
+
+    def reset_config():
+        self.set_config({ **CAMERA_DEFAULT_CONFIG, **CAMERA_STARTUP_CONFIG })
+        self.mode = 0
+
+
+    def get_file(path):
+        camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
 
 
 # --- DEBUG METHODS ---

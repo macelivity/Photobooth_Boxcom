@@ -2,16 +2,19 @@ import evdev
 
 
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
+EVENT_COOLDOWN = 4
 
 class RemoteInput:
 
     controller = None
     actions = {}
+    last_event_time = None
 
 
     def __init(self):
         self.controller = None
         self.actions = {}
+        self.last_event_time = None
 
     
     def connect():
@@ -27,7 +30,9 @@ class RemoteInput:
     def start_listen():
         last_photo_time = time.time()
         for event in remote_control.read_loop():
-            get_action(event.code)()
+            if is_valid_event(event):
+                get_action(event.code)()
+                get_action("*")()
 
 
     def get_action(key):
@@ -35,3 +40,10 @@ class RemoteInput:
 
     def set_action(key, action):
         self.actions[key] = action
+
+
+    def is_valid_event(event):
+        if event.type != evdev.ecodes.EV_KEY: return False
+        if event.sec < self.last_event_time + EVENT_COOLDOWN: return False
+        if event.value != 1: return False
+        return True
