@@ -21,7 +21,10 @@ def print_events():
         if schedule_capture:
             print("Shoot!")
             global camera
-            camera.capture(gp.GP_CAPTURE_IMAGE)
+            try:
+                camera.capture(gp.GP_CAPTURE_IMAGE)
+            except Exception as e:
+                print(e)
         event_type, event_data = camera.wait_for_event(5000)
         print("Event captured: " + str(event_type) + "; <> " + str(event_data))
 
