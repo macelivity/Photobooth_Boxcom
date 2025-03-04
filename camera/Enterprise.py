@@ -23,9 +23,10 @@ def print_events():
             global camera
             try:
                 camera.capture(gp.GP_CAPTURE_IMAGE)
-                schedule_capture = False
             except Exception as e:
                 print(e)
+            finally:
+                schedule_capture = False
         event_type, event_data = camera.wait_for_event(5000)
         print("Event captured: " + str(event_type) + "; <> " + str(event_data))
 
