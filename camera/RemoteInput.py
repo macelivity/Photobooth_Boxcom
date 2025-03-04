@@ -12,7 +12,7 @@ class RemoteInput:
     last_event_time = None
 
 
-    def __init(self):
+    def __init__(self):
         self.controller = None
         self.actions = {}
         self.last_event_time = time.time()
