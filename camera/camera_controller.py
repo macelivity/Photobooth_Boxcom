@@ -2,26 +2,18 @@ import os
 import time
 from datetime import datetime
 import threading
-import evdev
-import gphoto2 as gp
 import logging
 
 
 IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images"
 RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
 FILENAME_DIGIT_COUNT = 6
-REMOTE_CONTROL_NAME = "Logitech USB Receiver"
-CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9 }
-CAMERA_DEFAULT_CONFIG = { "aspectratio": 0, "picturestyle": 1, "aperture": 0, "shutterspeed": 37 }
-MODES = [ CAMERA_DEFAULT_CONFIG, { "aspectratio": 0 }, { "aspectratio": 3 } ]
 SECONDS_TO_GO_IDLE = 90.0
 
 
 logging.basicConfig(filename="backend.log", level=logging.DEBUG)
 
 
-global current_mode
-current_mode = 0
 global change_mode_timestamp
 change_mode_timestamp = datetime.now()
 
@@ -45,32 +37,11 @@ def help():
 	print("reset_camera_config() \t- Resets all camera configs to the values specified in CAMERA_DEFAULT_CONFIG. If the value of a setting is not specified therein, it stays the same")
 	print("start_listen_for_remote_control() \t- ")
 	print("stop_listen_for_remote_control() \t- ")
+	print("startup() \t- Starts all processes for input and camera control")
+	print("shutdown() \t- Ends all processes for input and camera control")
 
 
-def reset_camera():
-	apply_configurations({ **CAMERA_DEFAULT_CONFIG, **CAMERA_STARTUP_CONFIG })
-	global current_mode
-	current_mode = 0
 
-
-def initialize_camera():
-	global camera
-	camera = gp.check_result(gp.gp_camera_new())
-	gp.check_result(gp.gp_camera_init(camera))
-	global camera_config
-	camera_config = gp.check_result(gp.gp_camera_get_config(camera))
-
-	reset_camera()
-
-
-def register_remote_control():
-	global remote_control
-	remote_control = None
-	devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-	for device in devices:
-		if device.name == REMOTE_CONTROL_NAME:
-			remote_control = device
-			break
 
 
 def normalize_id(id):
@@ -92,100 +63,6 @@ def save_image(folder, name):
 
 
 
-def take_picture():
-	try:
-		global camera
-		file_path = camera.capture(gp.GP_CAPTURE_IMAGE)
-	except Exception as e:
-		print("Capturing image failed. Exception:")
-		print(e)
-		return
-
-	# Wait for camera to finish capture
-	while True:
-		event_type, event_data = camera.wait_for_event(5000)
-		if event_type == gp.GP_EVENT_FILE_ADDED:
-			break
-
-	save_image(file_path.folder, file_path.name)
-
-
-def print_config_categories():
-	global camera_config
-	if camera_config == None:
-		print("camera_config does not exist. Please initialize the camera.")
-		return
-
-	category_count = camera_config.count_children()
-	for n in range(category_count):
-		category = camera_config.get_child(n)
-		label = "{}: {} ({})".format(n, category.get_label(), category.get_name())
-		print(label)
-
-def print_config_options(category_index):
-	global camera_config
-	if camera_config == None:
-		print("camera_config does not exist. Please initialize the camera.")
-		return
-
-	category = camera_config.get_child(category_index)
-	options_count = category.count_children()
-	for n in range(options_count):
-		option = category.get_child(n)
-		label = "{} ({}): ({})".format(option.get_label(), option.get_name(), option.get_value())
-		print(label)
-
-
-
-def update_camera_config():
-	global camera
-	global camera_config
-	for i in range(5):
-		try:
-			gp.check_result(gp.gp_camera_set_config(camera, camera_config))
-			logging.info("\tCamera config was updated successfully.")
-			return
-		except Exception as e:
-			logging.error("An error occured while updating config on the camera. Message: " + str(e))
-			time.sleep(0.5)
-	logging.error("Failed to update camera config.")
-
-
-def set_config(config_name, value, leave_camera_dirty=False):
-	global camera
-	global camera_config
-	if camera_config == None:
-		logging.error("Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized")
-		return
-
-	setting = gp.check_result(gp.gp_widget_get_child_by_name(camera_config, config_name))
-
-	if value < 0:
-		logging.error("Failed to set config. Value must not be less than 0")
-		return
-	options_count = gp.check_result(gp.gp_widget_count_choices(setting))
-	if value >= options_count:
-		logging.error("Failed to set config. Value is out of range. Max option is " + str(value - 1))
-		return
-
-	choice = gp.check_result(gp.gp_widget_get_choice(setting, value))
-	logging.info("You chose as " + config_name + ": " + str(choice))
-	gp.check_result(gp.gp_widget_set_value(setting, choice))
-
-	if not leave_camera_dirty:
-		update_camera_config()
-
-
-def apply_configurations(configurations):
-	config = { **CAMERA_DEFAULT_CONFIG, **configurations }
-	for config_name in config.keys():
-		set_config(config_name, config[config_name], True)
-
-	update_camera_config()
-
-
-def reset_camera_config():
-	apply_configurations(CAMERA_DEFAULT_CONFIG)
 
 
 def change_to_default_mode():
@@ -209,18 +86,6 @@ def change_to_next_mode():
 	change_mode_timestamp = datetime.now()
 	if current_mode >= len(MODES):
 		current_mode = 0
-	apply_configurations(MODES[current_mode])
-	timer = threading.Timer(SECONDS_TO_GO_IDLE, change_to_default_mode_if_idle)
-	timer.start()
-
-
-def change_to_previous_mode():
-	global current_mode
-	current_mode -= 1
-	global change_mode_timestamp
-	change_mode_timestamp = datetime.now()
-	if current_mode < 0:
-		current_mode = len(MODES) - 1
 	apply_configurations(MODES[current_mode])
 	timer = threading.Timer(SECONDS_TO_GO_IDLE, change_to_default_mode_if_idle)
 	timer.start()
@@ -304,7 +169,7 @@ def startup():
 
 
 def shutdown():
-	#stop_listen_for_remote_control()
+	stop_listen_for_remote_control()
 	global camera
 	camera.exit()
 

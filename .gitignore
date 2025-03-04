@@ -2,6 +2,8 @@ isync.py
 __pycache__/
 images /
 
+prototypes/
+
 printer/node_modules/
 
 camera/__pycache__/
