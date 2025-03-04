@@ -1,0 +1,30 @@
+from RemoteInput import RemoteInput
+import threading
+import logging
+import gphoto2 as gp
+
+
+logging.basicConfig(filename="enterprise.log", level=logging.DEBUG)
+
+
+camera = gp.check_result(gp.gp_camera_new())
+gp.check_result(gp.gp_camera_init(camera))
+
+def print_events():
+    while True:
+        event_type, event_data = camera.wait_for_event(5000)
+        if event_type == gp.GP_EVENT_FILE_ADDED:
+            break
+
+
+
+event_printer = threading.Thread(target=print_events())
+event_printer.start()
+
+
+def shoot():
+    camera.capture(gp.GP_CAPTURE_IMAGE)
+
+rem = RemoteInput()
+rem.connect(logging)
+rem.set_action("*", shoot)
