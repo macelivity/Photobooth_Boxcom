@@ -17,9 +17,6 @@ def print_events():
 
 
 
-event_printer = threading.Thread(target=print_events())
-event_printer.start()
-
 
 print("############################################################")
 
@@ -29,3 +26,6 @@ def shoot():
 rem = RemoteInput()
 rem.connect(logging)
 rem.set_action("*", shoot)
+
+event_printer = threading.Thread(target=print_events())
+event_printer.start()
