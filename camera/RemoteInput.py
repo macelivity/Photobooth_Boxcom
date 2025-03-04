@@ -23,7 +23,7 @@ class RemoteInput:
         for device in devices:
             if device.name == REMOTE_CONTROL_NAME:
                 self.controller = device
-                break
+                return
         raise Exception("No controller with title '" + REMOTE_CONTROL_NAME + "' was found.")
 
 
