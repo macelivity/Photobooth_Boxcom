@@ -41,10 +41,10 @@ class RemoteInput:
         for event in self.controller.read_loop():
             if self.is_valid_event(event):
                 if self.has_action(event.code):
-                    self.get_action(event.code)()
+                    self.consume_action(self.get_action(event.code))
                     self.last_event_time = time.time()
                 if self.has_action("*"):
-                    self.get_action("*")()
+                    self.consume_action(self.get_action("*"))
                     self.last_event_time = time.time()
 
 
