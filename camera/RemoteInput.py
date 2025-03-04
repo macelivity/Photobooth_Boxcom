@@ -30,7 +30,7 @@ class RemoteInput:
 
     def start_listen(self):
         last_photo_time = time.time()
-        for event in remote_control.read_loop():
+        for event in self.controller.read_loop():
             if is_valid_event(event):
                 get_action(event.code)()
                 get_action("*")()
