@@ -17,7 +17,7 @@ class RemoteInput:
         self.last_event_time = None
 
     
-    def connect():
+    def connect(self):
         self.controller = None
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for device in devices:
@@ -27,7 +27,7 @@ class RemoteInput:
         raise Exception("No controller with title '" + REMOTE_CONTROL_NAME + "' was found.")
 
 
-    def start_listen():
+    def start_listen(self):
         last_photo_time = time.time()
         for event in remote_control.read_loop():
             if is_valid_event(event):
@@ -35,14 +35,14 @@ class RemoteInput:
                 get_action("*")()
 
 
-    def get_action(key):
+    def get_action(self, key):
         return self.actions[key]
 
-    def set_action(key, action):
+    def set_action(self, key, action):
         self.actions[key] = action
 
 
-    def is_valid_event(event):
+    def is_valid_event(self, event):
         if event.type != evdev.ecodes.EV_KEY: return False
         if event.sec < self.last_event_time + EVENT_COOLDOWN: return False
         if event.value != 1: return False

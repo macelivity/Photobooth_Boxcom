@@ -17,13 +17,13 @@ class CameraController:
         self.config = CAMERA_DEFAULT_CONFIG
 
 
-    def connect():
+    def connect(self):
         self.camera = gp.check_result(gp.gp_camera_new())
         gp.check_result(gp.gp_camera_init(self.camera))
         self.camera_config = gp.check_result(gp.gp_camera_get_config(camera))
 
 
-    def disconnect():
+    def disconnect(self):
         self.camera.exit()
 
 
@@ -31,7 +31,7 @@ class CameraController:
         Releases the shutter of the camera and returns the filepath of the picture taken.
         This method is unsafe. If something prevents the camera from shooting, an uncaught error is thrown.
     """
-    def shoot():
+    def shoot(self):
         file_path = self.camera.capture(gp.GP_CAPTURE_IMAGE)
 
         # Wait for camera to finish capture
@@ -43,12 +43,12 @@ class CameraController:
         return file_path
         
 
-    def set_mode(index):
+    def set_mode(self, index):
         self.mode = index
         set_config(MODES[self.mode])
 
 
-    def rotate_mode(forward):
+    def rotate_mode(self, forward):
         next_mode = 0
         if forward:
             next_mode = (self.mode + 1) % len(MODES)
@@ -65,24 +65,24 @@ class CameraController:
         Sets the configuration of the camera.
         This method is unsafe. If uploading the config to the camera failes, an uncaught error is thrown.
     """
-    def set_config(configurations):
+    def set_config(self, configurations):
         self.config = { **CAMERA_DEFAULT_CONFIG, **configurations }
 
         gp.check_result(gp.gp_camera_set_config(self.camera, self.camera_config))
         
 
-    def reset_config():
+    def reset_config(self):
         self.set_config({ **CAMERA_DEFAULT_CONFIG, **CAMERA_STARTUP_CONFIG })
         self.mode = 0
 
 
-    def get_file(path):
+    def get_file(self, path):
         camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
 
 
 # --- DEBUG METHODS ---
 
-    def debug_set_config_property(config_name, value, leave_camera_dirty=False):
+    def debug_set_config_property(self, config_name, value, leave_camera_dirty=False):
         if camera_config == None:
             logging.error("Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized")
             return
