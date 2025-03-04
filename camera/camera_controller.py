@@ -79,6 +79,7 @@ def startup():
 	rem = RemoteInput()
 	rem.connect()
 	rem.set_action("*", take_picture)
+	rem.start_listen()
 
 
 def shutdown():
