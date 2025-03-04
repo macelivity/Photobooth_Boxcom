@@ -25,6 +25,7 @@ event_printer.start()
 print("########################################################################################################################")
 
 def shoot():
+    print("Shoot!")
     global camera
     camera.capture(gp.GP_CAPTURE_IMAGE)
 
