@@ -28,3 +28,4 @@ def shoot():
 rem = RemoteInput(logging)
 rem.connect()
 rem.set_action("*", shoot)
+rem.start_listen()
