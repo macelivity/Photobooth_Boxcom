@@ -3,6 +3,8 @@ import time
 from datetime import datetime
 import threading
 import logging
+import CameraController
+import RemoteInput
 
 
 IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images"
