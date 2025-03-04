@@ -2,6 +2,7 @@ from RemoteInput import RemoteInput
 import threading
 import logging
 import gphoto2 as gp
+import time
 
 
 logging.basicConfig(filename="enterprise.log", level=logging.DEBUG)
