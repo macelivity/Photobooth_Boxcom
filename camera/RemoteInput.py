@@ -12,10 +12,11 @@ class RemoteInput:
     last_event_time = None
 
 
-    def __init__(self):
+    def __init__(self, logging):
         self.controller = None
         self.actions = {}
         self.last_event_time = time.time()
+        self.logging = logging
 
     
     def connect(self):
@@ -26,6 +27,13 @@ class RemoteInput:
                 self.controller = device
                 return
         raise Exception("No controller with title '" + REMOTE_CONTROL_NAME + "' was found.")
+
+
+    def consume_action(self, action):
+        try:
+            action()
+        except Exception as e:
+            logging.error(e.)
 
 
     def start_listen(self):

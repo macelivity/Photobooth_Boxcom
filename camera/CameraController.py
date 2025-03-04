@@ -12,9 +12,10 @@ class CameraController:
     config = CAMERA_STARTUP_CONFIG
 
 
-    def __init__(self):
+    def __init__(self, logging):
         self.mode = 0
         self.config = CAMERA_DEFAULT_CONFIG
+        self.logging = logging
 
 
     def connect(self):

@@ -71,11 +71,11 @@ def stop_listen_for_remote_control():
 
 def startup():
 	global cam
-	cam = CameraController()
+	cam = CameraController(logging)
 	cam.connect()
 
 	global rem
-	rem = RemoteInput()
+	rem = RemoteInput(logging)
 	rem.connect()
 	rem.set_action("*", take_picture)
 	rem.start_listen()
