@@ -37,7 +37,7 @@ class CameraController:
 
         # Wait for camera to finish capture
         while True:
-            event_type, event_data = camera.wait_for_event(5000)
+            event_type, event_data = self.cam.wait_for_event(5000)
             if event_type == gp.GP_EVENT_FILE_ADDED:
                 break
 
