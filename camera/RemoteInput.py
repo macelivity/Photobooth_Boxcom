@@ -1,4 +1,5 @@
 import evdev
+import time
 
 
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
