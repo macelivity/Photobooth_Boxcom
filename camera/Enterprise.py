@@ -22,7 +22,7 @@ def print_events():
             print("Shoot!")
             global camera
             try:
-                camera.trigger_capture()
+                camera.capture(gp.GP_CAPTURE_IMAGE)
                 time
             except Exception as e:
                 print(e)
