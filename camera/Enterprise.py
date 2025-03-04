@@ -21,6 +21,8 @@ event_printer = threading.Thread(target=print_events())
 event_printer.start()
 
 
+print("############################################################")
+
 def shoot():
     camera.capture(gp.GP_CAPTURE_IMAGE)
 
