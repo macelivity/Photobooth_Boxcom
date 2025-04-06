@@ -3,7 +3,8 @@ import time
 
 
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
-EVENT_COOLDOWN = 1
+EVENT_COOLDOWN = 0
+LISTEN = TRUE
 
 class RemoteInput:
 
@@ -37,8 +38,11 @@ class RemoteInput:
 
 
     def start_listen(self):
+        LISTEN = True
         last_photo_time = time.time()
         for event in self.controller.read_loop():
+            if not LISTEN:
+                return
             if self.is_valid_event(event):
                 print("Input Event caught: " + str(event))
                 if self.has_action(event.code):
@@ -47,6 +51,10 @@ class RemoteInput:
                 if self.has_action("*"):
                     self.consume_action(self.get_action("*"))
                     self.last_event_time = time.time()
+
+
+    def stop_listen(self):
+        LISTEN = False
 
 
     def has_action(self, key):

@@ -28,6 +28,15 @@ class CameraController:
         self.camera.exit()
 
 
+    def reconnect(self):
+        self.disconnect()
+        self.connect()
+
+
+    def fallback(self):
+        self.reconnect()
+
+
     """
         Releases the shutter of the camera and returns the filepath of the picture taken.
         This method is unsafe. If something prevents the camera from shooting, an uncaught error is thrown.

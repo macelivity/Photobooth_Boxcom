@@ -6,8 +6,8 @@ from CameraController import CameraController
 from RemoteInput import RemoteInput
 
 
-IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images"
-RAW_IMAGE_TARGET_DIRECTORY = "/home/photobooth/boxcom/images_raw"
+IMAGE_TARGET_DIRECTORY = "/home/fotobox/images"
+RAW_IMAGE_TARGET_DIRECTORY = "/home/fotobox/images_raw"
 FILENAME_DIGIT_COUNT = 6
 SECONDS_TO_GO_IDLE = 90.0
 
@@ -52,21 +52,12 @@ def take_picture():
 		logging.info("Can't take picture because no camera is connected")
 		return
 
-	filepath = cam.shoot()
-	save_image(filepath)
-
-
-def start_listen_for_remote_control():
-	global remote_control_listener
-	remote_control_listener = threading.Thread(target=rem.start_listen())
-	remote_control_listener.start()
-
-
-def stop_listen_for_remote_control():
-	global remote_control_listener
-	if not "remote_control_listener" in globals():
-		return
-	remote_control_listener.listen = False
+	try:
+		filepath = cam.shoot()
+		save_image(filepath)
+	except Exception as e:
+		print(e)
+		cam.fallback()
 
 
 def startup():
@@ -82,7 +73,9 @@ def startup():
 
 
 def shutdown():
-	stop_listen_for_remote_control()
+	global rem
+	rem.stop_listen()
+
 	global cam
 	cam.disconnect()
 
