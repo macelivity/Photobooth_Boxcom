@@ -1,8 +1,9 @@
 import os
 from datetime import datetime
 import logging
-from CameraController import CameraController
-from RemoteInput import RemoteInput
+import CameraController
+import RemoteInput
+import time
 
 
 IMAGE_TARGET_DIRECTORY = "/home/fotobox/images"
@@ -32,15 +33,17 @@ def normalize_id(id):
 def save_image(path):
 	try:
 		global image_index
-		logging.info("Loading jpg from {}/{}...".format(path.folder, path.name))
+		logging.info("{}: [root] <save_image> Loading jpg from {}/{}...".format(time.time(), path.folder, path.name))
 		file = cam.get_file(path)
 		id = normalize_id(str(image_index))
+		logging.info("{}: [root] <save_image> Saving {} with id {}".format(time.time(), file, id))
 		file.save("{}/img{}.jpg".format(IMAGE_TARGET_DIRECTORY, id))
-		logging.info("Successfully saved jpg at {}/img{}.jpg!".format(IMAGE_TARGET_DIRECTORY, id))
+		logging.info("{}: [root] <save_image> Successfully saved jpg at {}/img{}.jpg!".format(time.time(), IMAGE_TARGET_DIRECTORY, id))
 		image_index += 1
 
 	except Exception as e:
-		logging.error("Something went wrong while trying to save a JPG picture. Exception message: " + str(e))
+		logging.error("{}: [root] <save_image> Something went wrong while trying to save a JPG picture".format(time.time()))
+		logging.error(e)
 
 
 
@@ -48,7 +51,7 @@ def take_picture():
 	global cam
 	
 	if cam == None:
-		logging.info("Can't take picture because no camera is connected")
+		logging.info("{}: [root] <take_picture> Can't take picture because no camera is connected".format(time.time()))
 		return
 
 	try:

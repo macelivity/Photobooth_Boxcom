@@ -1,4 +1,5 @@
 import gphoto2 as gp
+import time
 
 
 CAMERA_STARTUP_CONFIG = { "capturetarget": 0, "imageformat": 9 }
@@ -19,22 +20,30 @@ class CameraController:
 
 
     def connect(self):
+        self.logging.info("{}: [CamCon] <connect> Connecting to camera".format(time.time()))
+
         self.camera = gp.check_result(gp.gp_camera_new())
         gp.check_result(gp.gp_camera_init(self.camera))
+
+        self.logging.info("{}: [CamCon] <connect> Connected successfully to {}".format(time.time(), self.camera))
+
         self.camera_config = gp.check_result(gp.gp_camera_get_config(self.camera))
         self.reset_config()
 
 
     def disconnect(self):
+        self.logging.info("{}: [CamCon] <disconnect> Disconnecting camera".format(time.time()))
         self.camera.exit()
 
 
     def reconnect(self):
+        self.logging.info("{}: [CamCon] <reconnect> Reconnecting camera".format(time.time()))
         self.disconnect()
         self.connect()
 
 
     def fallback(self):
+        self.logging.debug("{}: [CamCon] <fallback> Going into Fallback!".format(time.time()))
         self.reconnect()
 
 
@@ -79,15 +88,21 @@ class CameraController:
     def set_config(self, configurations):
         self.config = { **CAMERA_DEFAULT_CONFIG, **configurations }
 
+        self.logging.info("{}: [CamCon] <set_config> Setting config to {}".format(time.time(), configurations))
+
         gp.check_result(gp.gp_camera_set_config(self.camera, self.camera_config))
         
 
     def reset_config(self):
+        self.logging.info("{}: [CamCon] <reset_config> Resetting config".format(time.time()))
+
         self.set_config({ **CAMERA_DEFAULT_CONFIG, **CAMERA_STARTUP_CONFIG })
         self.mode = 0
 
 
     def get_file(self, path):
+        self.logging.info("{}: [CamCon] <get_file> Getting file at '{}'".format(time.time(), path))
+
         self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
 
 
@@ -95,17 +110,17 @@ class CameraController:
 
     def debug_set_config_property(self, config_name, value, leave_camera_dirty=False):
         if self.camera_config == None:
-            self.logging.error("Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized")
+            self.logging.error("{}: [CamCon] <debug_set_config_property> Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized".format(time.time()))
             return
 
         setting = gp.check_result(gp.gp_widget_get_child_by_name(self.camera_config, config_name))
 
         if value < 0:
-            self.logging.error("Failed to set config. Value must not be less than 0")
+            self.logging.error("{}: [CamCon] <debug_set_config_property> Failed to set config. Value must not be less than 0".format(time.time()))
             return
         options_count = gp.check_result(gp.gp_widget_count_choices(setting))
         if value >= options_count:
-            self.logging.error("Failed to set config. Value is out of range. Max option is " + str(value - 1))
+            self.logging.error("{}: [CamCon] <debug_set_config_property> Failed to set config. Value is out of range. Max option is {}".format(time.time(), str(value - 1)))
             return
 
         choice = gp.check_result(gp.gp_widget_get_choice(setting, value))

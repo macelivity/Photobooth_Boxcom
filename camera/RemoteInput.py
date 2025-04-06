@@ -21,6 +21,7 @@ class RemoteInput:
 
     
     def connect(self):
+        self.logging.info("{}: [RemInp] <connect> Connecting to remote controller".format(time.time()))
         self.controller = None
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         for device in devices:
@@ -44,7 +45,7 @@ class RemoteInput:
             if not LISTEN:
                 return
             if self.is_valid_event(event):
-                print("Input Event caught: " + str(event))
+                self.logging.info("{}: [RemInp] <start_listen> Input Event caught:".format(time.time(), event))
                 if self.has_action(event.code):
                     self.consume_action(self.get_action(event.code))
                     self.last_event_time = time.time()
@@ -54,6 +55,7 @@ class RemoteInput:
 
 
     def stop_listen(self):
+        self.logging.info("{}: [RemInp] <stop_listen> Stop listening for remote input".format(time.time()))
         LISTEN = False
 
 
