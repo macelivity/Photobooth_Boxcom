@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 import logging
-import CameraController
-import RemoteInput
+from CameraController import CameraController
+from RemoteInput import RemoteInput
 import time
 
 
