@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-import threading
 import logging
 from CameraController import CameraController
 from RemoteInput import RemoteInput

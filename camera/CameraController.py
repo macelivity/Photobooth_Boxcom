@@ -22,6 +22,7 @@ class CameraController:
         self.camera = gp.check_result(gp.gp_camera_new())
         gp.check_result(gp.gp_camera_init(self.camera))
         self.camera_config = gp.check_result(gp.gp_camera_get_config(self.camera))
+        self.reset_config()
 
 
     def disconnect(self):
