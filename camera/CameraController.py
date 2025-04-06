@@ -103,7 +103,7 @@ class CameraController:
     def get_file(self, path):
         self.logging.info("{}: [CamCon] <get_file> Getting file at '{}'".format(time.time(), path))
 
-        self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
+        return self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
 
 
 # --- DEBUG METHODS ---

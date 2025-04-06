@@ -33,7 +33,7 @@ def normalize_id(id):
 def save_image(path):
 	try:
 		global image_index
-		logging.info("{}: [root] <save_image> Loading jpg from {}/{}...".format(time.time(), path.folder, path.name))
+		logging.info("{}: [root] <save_image> Loading jpg from {}{}...".format(time.time(), path.folder, path.name))
 		file = cam.get_file(path)
 		id = normalize_id(str(image_index))
 		logging.info("{}: [root] <save_image> Saving {} with id {}".format(time.time(), file, id))
