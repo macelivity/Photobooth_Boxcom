@@ -55,7 +55,7 @@ class CameraController:
 
     def set_mode(self, index):
         self.mode = index
-        set_config(MODES[self.mode])
+        self.set_config(MODES[self.mode])
 
 
     def rotate_mode(self, forward):
@@ -67,7 +67,7 @@ class CameraController:
             if next_mode < 0:
                 next_mode = len(MODES) - 1
         
-        set_mode(next_mode)
+        self.set_mode(next_mode)
         
 
 
@@ -87,29 +87,29 @@ class CameraController:
 
 
     def get_file(self, path):
-        camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
+        self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
 
 
 # --- DEBUG METHODS ---
 
     def debug_set_config_property(self, config_name, value, leave_camera_dirty=False):
-        if camera_config == None:
-            logging.error("Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized")
+        if self.camera_config == None:
+            self.logging.error("Failed to set config, because no camera_config is loaded. Please make sure the camera is connected and initialized")
             return
 
-        setting = gp.check_result(gp.gp_widget_get_child_by_name(camera_config, config_name))
+        setting = gp.check_result(gp.gp_widget_get_child_by_name(self.camera_config, config_name))
 
         if value < 0:
-            logging.error("Failed to set config. Value must not be less than 0")
+            self.logging.error("Failed to set config. Value must not be less than 0")
             return
         options_count = gp.check_result(gp.gp_widget_count_choices(setting))
         if value >= options_count:
-            logging.error("Failed to set config. Value is out of range. Max option is " + str(value - 1))
+            self.logging.error("Failed to set config. Value is out of range. Max option is " + str(value - 1))
             return
 
         choice = gp.check_result(gp.gp_widget_get_choice(setting, value))
-        logging.info("You chose as " + config_name + ": " + str(choice))
+        self.logging.info("You chose as " + config_name + ": " + str(choice))
         gp.check_result(gp.gp_widget_set_value(setting, choice))
 
         if not leave_camera_dirty:
-            update_camera_config()
+            self.update_camera_config()
