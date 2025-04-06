@@ -4,7 +4,7 @@ import time
 
 REMOTE_CONTROL_NAME = "Logitech USB Receiver"
 EVENT_COOLDOWN = 0
-LISTEN = TRUE
+LISTEN = True
 
 class RemoteInput:
 
