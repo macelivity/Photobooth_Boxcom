@@ -44,7 +44,12 @@ class CameraController:
 
     def fallback(self):
         self.logging.debug("{}: [CamCon] <fallback> Going into Fallback!".format(time.time()))
-        self.reconnect()
+        while not self.camera:
+            try:
+                self.reconnect()
+            except Exception as e:
+                self.logging.debug("{}: [CamCon] <fallback> Connecting to Camera failed: {}".format(time.time(), str(e)))
+                time.sleep(5)
 
 
     """

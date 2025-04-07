@@ -29,6 +29,15 @@ class RemoteInput:
                 self.controller = device
                 return
         raise Exception("No controller with title '" + REMOTE_CONTROL_NAME + "' was found.")
+    
+
+    def fallback(self):
+        while not self.controller:
+            try:
+                self.connect()
+            except Exception as e:
+                self.logging.debug("{}: [RemInp] <fallback> Connecting to Remote Input failed: {}".format(time.time(), str(e)))
+                time.sleep(5)
 
 
     def consume_action(self, action):

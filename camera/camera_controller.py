@@ -69,9 +69,13 @@ def startup():
 
 	global rem
 	rem = RemoteInput(logging)
-	rem.connect()
-	rem.set_action("*", take_picture)
-	rem.start_listen()
+	try:
+		rem.connect()
+	except:
+		rem.fallback()
+	finally:
+		rem.set_action("*", take_picture)
+		rem.start_listen()
 
 
 def shutdown():
