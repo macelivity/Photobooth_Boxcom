@@ -31,7 +31,13 @@ class RemoteInput:
         raise Exception("No controller with title '" + REMOTE_CONTROL_NAME + "' was found.")
     
 
+    def disconnect(self):
+        LISTEN = False
+        self.controller = None
+    
+
     def fallback(self):
+        self.disconnect()
         while not self.controller:
             try:
                 self.connect()
