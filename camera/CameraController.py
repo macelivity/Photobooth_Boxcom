@@ -33,7 +33,10 @@ class CameraController:
 
     def disconnect(self):
         self.logging.info("{}: [CamCon] <disconnect> Disconnecting camera".format(time.time()))
-        self.camera.exit()
+        if self.camera:
+            self.camera.exit()
+        else:
+            self.logging.debug("{}: [CamCon] <disconnect> No camera was connected".format(time.time()))
 
 
     def reconnect(self):
