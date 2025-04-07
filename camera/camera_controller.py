@@ -13,7 +13,7 @@ SECONDS_TO_GO_IDLE = 90.0
 
 
 logging.basicConfig(filename="backend.log", level=logging.DEBUG)
-logging.info("\nNew Start at: {}".format(time.time()))
+logging.log("\n\n### New Start at: {}".format(time.time()))
 
 
 global change_mode_timestamp
