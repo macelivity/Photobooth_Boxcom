@@ -55,11 +55,12 @@ class RemoteInput:
 
     def start_listen(self):
         LISTEN = True
+        self.logging.info("{}: [RemInp] <start_listen> Start listening for remote control events".format(time.time()))
         for event in self.controller.read_loop():
             if not LISTEN:
                 return
             if self.is_valid_event(event):
-                self.logging.info("{}: [RemInp] <start_listen> Input Event caught:".format(time.time(), event))
+                self.logging.info("{}: [RemInp] <start_listen> Input Event caught: {}".format(time.time(), str(event)))
                 if self.has_action(event.code):
                     self.consume_action(self.get_action(event.code))
                     self.last_event_time = time.time()
@@ -69,7 +70,7 @@ class RemoteInput:
 
 
     def stop_listen(self):
-        self.logging.info("{}: [RemInp] <stop_listen> Stop listening for remote input".format(time.time()))
+        self.logging.info("{}: [RemInp] <stop_listen> Stop listening for remote control".format(time.time()))
         LISTEN = False
 
 

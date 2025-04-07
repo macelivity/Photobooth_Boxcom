@@ -37,7 +37,7 @@ def save_image(path):
 		logging.info("{}: [root] <save_image> Loading jpg from {}{}...".format(time.time(), path.folder, path.name))
 		file = cam.get_file(path)
 		id = normalize_id(str(image_index))
-		logging.info("{}: [root] <save_image> Saving {} with id {}".format(time.time(), file, id))
+		logging.info("{}: [root] <save_image> Saving image with id {}".format(time.time(), id))
 		file.save("{}/img{}.jpg".format(IMAGE_TARGET_DIRECTORY, id))
 		logging.info("{}: [root] <save_image> Successfully saved jpg at {}/img{}.jpg!".format(time.time(), IMAGE_TARGET_DIRECTORY, id))
 		image_index += 1
