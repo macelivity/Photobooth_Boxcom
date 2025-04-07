@@ -35,6 +35,7 @@ class CameraController:
         self.logging.info("{}: [CamCon] <disconnect> Disconnecting camera".format(time.time()))
         if self.camera:
             self.camera.exit()
+            self.camera = None
         else:
             self.logging.debug("{}: [CamCon] <disconnect> No camera was connected".format(time.time()))
 
@@ -47,7 +48,7 @@ class CameraController:
 
     def fallback(self):
         self.logging.debug("{}: [CamCon] <fallback> Going into Fallback!".format(time.time()))
-        self.reconnect()
+        self.disconnect()
         while not self.camera:
             try:
                 self.reconnect()
