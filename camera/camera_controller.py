@@ -65,7 +65,10 @@ def take_picture():
 def startup():
 	global cam
 	cam = CameraController(logging)
-	cam.connect()
+	try:
+		cam.connect()
+	except:
+		cam.fallback()
 
 	global rem
 	rem = RemoteInput(logging)
