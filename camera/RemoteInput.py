@@ -55,7 +55,6 @@ class RemoteInput:
 
     def start_listen(self):
         LISTEN = True
-        last_photo_time = time.time()
         for event in self.controller.read_loop():
             if not LISTEN:
                 return

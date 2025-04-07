@@ -78,7 +78,12 @@ def startup():
 		rem.fallback()
 	finally:
 		rem.set_action("*", take_picture)
-		rem.start_listen()
+		while True:
+			try:
+				rem.start_listen()
+			except Exception as e:
+				logging.error("{} [root] <main> An error was thrown by the remote control.\n\t Exception Message: {}".format(time.time(), str(e)))
+				rem.fallback()
 
 
 def shutdown():
@@ -89,8 +94,24 @@ def shutdown():
 	cam.disconnect()
 
 
+def main():
+	while True:
+		try:
+			startup()
+		except Exception as e:
+			logging.error("{} [root] <main> AN UNCAUGHT EXCEPTION WAS THROWN! Restarting the service.\n\t Exception Message: {}".format(time.time(), str(e)))
+			print(str(e))
+			time.sleep(3)
+
+
 if __name__ == "__main__":
-	startup()
+	try:
+		main()
+	except Exception as e:
+		logging.error("{} [root] Shutting down service.\n\t Exception Message: {}".format(time.time(), str(e)))
+		print(str(e))
+	finally:
+		shutdown()
 
 
 #print(str(event.value) + "; c: " + str(event.code))
